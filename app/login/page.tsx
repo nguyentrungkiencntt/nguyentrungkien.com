@@ -5,10 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { icons } from "@/utils/icons";
 import { Spin } from "antd";
-import { redirect } from "next/navigation";
-import { useUser } from "@/app/context/UserContext";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../store/lib/store";
 
 const { IoReload } = icons;
 
@@ -20,10 +16,8 @@ export default function MyWindsorLoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { messageApi } = useUser();
   const [captchaInput, setCaptchaInput] = useState<string>("");
   const [captchaCode, setCaptchaCode] = useState<string>("");
-  const dispatch = useDispatch<AppDispatch>()
 
 
   useEffect(() => {

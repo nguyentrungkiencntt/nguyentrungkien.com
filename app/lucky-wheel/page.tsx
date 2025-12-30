@@ -78,7 +78,6 @@ export default function MyVerseLuckySpin() {
         });
     };
 
-    // apply reward to user (client-side simulation)
     const applyReward = (r: Reward) => {
         if (r.type === "coin" && r.amount) {
             setUser((prev) => ({ ...prev, balance: prev.balance + (r?.amount ? r.amount : 0) }));
@@ -98,7 +97,6 @@ export default function MyVerseLuckySpin() {
     };
 
 
-    // spin logic
     const spin = () => {
         if (isSpinning) return;
         if (spinsLeft <= 0) {
@@ -134,17 +132,6 @@ export default function MyVerseLuckySpin() {
 
     return (
         <div className="min-h-screen overflow-hidden bg-linear-to-b from-[#0f172a] via-[#22163b] to-[#4c1d95] text-white flex flex-col items-center p-6">
-            {/* Decorative galaxy blobs */}
-            {/* <motion.div
-                className="absolute w-[700px] h-[700px] bg-linear-to-tr from-[#7c3aed] to-[#06b6d4] opacity-20 blur-3xl rounded-full -left-56 -top-48 -z-10"
-                animate={{ x: [0, 30, -20, 0] }}
-                transition={{ duration: 12, repeat: Infinity }}
-            /> */}
-            {/* <motion.div
-                className="absolute w-[520px] h-[520px] bg-linear-to-tr from-[#ec4899] to-[#f59e0b] opacity-12 blur-3xl -right-20 top-52 -z-10 rounded-full"
-                animate={{ y: [0, -30, 20, 0] }}
-                transition={{ duration: 14, repeat: Infinity }}
-            /> */}
 
             <header className="w-full max-w-5xl flex items-center justify-between mb-8">
                 <div className="flex items-center gap-4">
@@ -175,7 +162,6 @@ export default function MyVerseLuckySpin() {
             </header>
 
             <main className="w-full max-w-6xl flex flex-col md:flex-row gap-8 items-center justify-center">
-                {/* Wheel area */}
                 <section className="flex-1 flex mt-4 flex-col items-center gap-6">
                     <div className="relative">
                         <motion.div
@@ -192,21 +178,16 @@ export default function MyVerseLuckySpin() {
                                 priority
                             />
 
-                            {/* Center glow */}
                             <motion.div
                                 className="absolute left-1/2 top-1/2 w-20 h-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-linear-to-tr from-[#06b6d4] to-[#7c3aed] blur-lg opacity-70"
                                 animate={{ scale: [1, 1.2, 1] }}
                                 transition={{ duration: 3, repeat: Infinity }}
                             />
                         </motion.div>
-
-                        {/* arrow */}
                         <div className="absolute left-1/2 -translate-x-1/2 -top-7">
                             <div className="w-0 h-0 border-l-18 border-r-18 border-b-36 border-l-transparent border-r-transparent border-b-[#fde68a] shadow-lg" />
                         </div>
                     </div>
-
-                    {/* Spin button + info */}
                     <div className="flex flex-col items-center gap-3 mt-4">
                         <motion.button
                             whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(124,58,237,0.35)" }}
@@ -226,8 +207,6 @@ export default function MyVerseLuckySpin() {
                         </div>
                     </div>
                 </section>
-
-                {/* Right panel: info & history */}
                 <aside className="w-full md:w-[420px] bg-white/5 border border-white/8 rounded-2xl p-5 flex flex-col gap-4">
                     <div>
                         <h3 className="text-lg font-bold">Phần thưởng có thể trúng</h3>
@@ -262,7 +241,6 @@ export default function MyVerseLuckySpin() {
                 </aside>
             </main>
 
-            {/* Result modal */}
             <AnimatePresence>
                 {selected && (
                     <>

@@ -7,10 +7,10 @@ import Image from "next/image";
 
 type Reward = {
   type: "coin" | "item" | "badge";
-  amount?: number; // nếu coin
+  amount?: number;
   title: string;
   description?: string;
-  image?: string; // đường dẫn trong /public
+  image?: string;
 };
 
 export default function RedeemPage() {
@@ -38,15 +38,11 @@ export default function RedeemPage() {
 
       const json = await res.json();
       if (!res.ok) throw new Error(json?.message || "Có lỗi xảy ra");
-
-      // thành công
       setReward(json.reward as Reward);
       setShowModal(true);
 
-      // hiệu ứng confetti nếu phần thưởng lớn
       launchConfetti(json.reward);
 
-      // reset input
       setCode("");
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
@@ -57,7 +53,6 @@ export default function RedeemPage() {
   }
 
   function launchConfetti(r: Reward) {
-    // lớn hơn 0 xu hoặc item đặc biệt -> nhiều confetti
     const particleCount = r.type === "item" ? 350 : 120;
     confetti({
       particleCount,
@@ -69,17 +64,6 @@ export default function RedeemPage() {
 
   return (
     <div className="flex w-full min-h-screen overflow-hidden items-center justify-center bg-linear-to-br from-[#0f172a] via-[#183a68] to-[#6b21a8]  p-6">
-      {/* <motion.div
-        className="absolute -left-32 -top-28 w-[520px] h-[520px] rounded-full bg-linear-to-tr from-[#3b82f6] to-[#7c3aed] opacity-30 blur-3xl"
-        animate={{ x: [0, 30, -20, 0], y: [0, -20, 20, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-      /> */}
-      {/* <motion.div
-        className="absolute -right-40 -bottom-32 w-[420px] h-[420px] rounded-full bg-linear-to-tr from-[#f97316] to-[#ef4444] opacity-20 blur-3xl"
-        animate={{ x: [0, -30, 20, 0], y: [0, 10, -10, 0] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      /> */}
-
       <motion.div
         initial={{ scale: 0.96, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -133,7 +117,6 @@ export default function RedeemPage() {
           </div>
         </form>
 
-        {/* features */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl bg-white/4 border border-white/6">
             <div className="text-sm text-white/80">Phần thưởng</div>
@@ -155,7 +138,6 @@ export default function RedeemPage() {
         </div>
       </motion.div>
 
-      {/* Modal kết quả */}
       <AnimatePresence>
         {showModal && reward && (
           <>
@@ -176,7 +158,6 @@ export default function RedeemPage() {
               <div className="flex items-start gap-4">
                 <div className="w-24 h-24 rounded-xl flex items-center justify-center bg-white/8 border border-white/8">
                   {reward.image ? (
-                    // nếu bạn có ảnh trong /public
                     <div className="relative w-20 h-20">
                       <Image src={reward.image} alt={reward.title} fill style={{ objectFit: "contain" }} />
                     </div>

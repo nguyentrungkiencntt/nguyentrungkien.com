@@ -47,7 +47,6 @@ export default function UnderConstructionPage() {
 
     return (
         <main className="relative min-h-screen overflow-hidden bg-[#8b0b0b]">
-            {/* background pattern */}
             <div className="pointer-events-none absolute inset-0 opacity-40">
                 <div
                     className="h-full w-full"
@@ -105,7 +104,6 @@ export default function UnderConstructionPage() {
                                     />
                                 </div>
 
-                                {/* text + buttons */}
                                 <div className="w-full">
                                     <div className="space-y-4 text-[15px] leading-6">
                                         <p className="text-[#cc0000]">

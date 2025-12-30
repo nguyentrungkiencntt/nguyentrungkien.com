@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import UnderConstructionPage from "@/components/Key";
+import Image from "next/image";
 
 type Source = {
   id: string | null;
@@ -58,6 +60,7 @@ export default function NewsStudioPage() {
   const [domesticOnly, setDomesticOnly] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [articles, setArticles] = useState<Article[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [total, setTotal] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [selected, setSelected] = useState<Article | null>(null);
@@ -128,15 +131,17 @@ export default function NewsStudioPage() {
             </div>
           </header>
 
-          {/* Hero featured */}
           <section className="mb-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {featured.length > 0 ? (
                 featured.map((a, idx) => (
-                  <motion.article key={a.url} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className={`rounded-2xl overflow-hidden ${idx === 0 ? 'lg:col-span-2' : ''} bg-gradient-to-br from-[#041827] to-[#072b3f]`}>
+                  <motion.article key={a.url} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className={`rounded-2xl overflow-hidden ${idx === 0 ? 'lg:col-span-2' : ''} bg-linear-to-br from-[#041827] to-[#072b3f]`}>
                     <div className="relative h-64">
-                      {a.urlToImage ? <img src={a.urlToImage} alt={a.title} className="w-full h-full object-cover" /> : <div className="w-full h-full bg-black/30" />}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      {a.urlToImage ? <Image src={a.urlToImage} alt={a.title}
+                      height={500}
+                      width={500}
+                      className="w-full h-full object-cover" /> : <div className="w-full h-full bg-black/30" />}
+                      <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                       <div className="absolute bottom-4 left-4 text-white">
                         <div className="text-xs opacity-80">{a.source.name} • {formatDate(a.publishedAt)}</div>
                         <h2 className="text-2xl font-bold">{a.title}</h2>
@@ -162,7 +167,10 @@ export default function NewsStudioPage() {
                   <article key={a.url} className="p-4 rounded-2xl bg-white/5 hover:scale-[1.01] transition-transform">
                     <div className="flex gap-4">
                       <div className="w-36 h-24 bg-black/20 rounded-md overflow-hidden">
-                        {a.urlToImage && <img src={a.urlToImage} alt={a.title} className="w-full h-full object-cover" />}
+                        {a.urlToImage && <Image src={a.urlToImage}
+                        height={500}
+                        width={500}
+                        alt={a.title} className="w-full h-full object-cover" />}
                       </div>
                       <div className="flex-1">
                         <div className="text-xs opacity-70">{a.source.name} • {formatDate(a.publishedAt)} • {estimateReadTime(a.content ?? a.description ?? undefined)}</div>
@@ -179,7 +187,7 @@ export default function NewsStudioPage() {
               </div>
 
               <div className="text-center mt-4">
-                {loading ? <div className="text-sm opacity-70">Đang tải...</div> : <button onClick={loadMore} className="px-4 py-2 rounded-md bg-gradient-to-r from-cyan-400 to-indigo-500 text-black">Tải thêm</button>}
+                {loading ? <div className="text-sm opacity-70">Đang tải...</div> : <button onClick={loadMore} className="px-4 py-2 rounded-md bg-linear-to-r from-cyan-400 to-indigo-500 text-black">Tải thêm</button>}
               </div>
             </div>
 
@@ -199,7 +207,10 @@ export default function NewsStudioPage() {
                 <div className="mt-3 space-y-2">
                   {articles.slice(0, 5).map(a => (
                     <div key={a.url} className="flex items-start gap-3">
-                      <div className="w-12 h-8 bg-black/20 rounded-md overflow-hidden">{a.urlToImage && <img src={a.urlToImage} className="w-full h-full object-cover" alt="thumb" />}</div>
+                      <div className="w-12 h-8 bg-black/20 rounded-md overflow-hidden">{a.urlToImage && <Image src={a.urlToImage} 
+                      width={500}
+                      height={500}
+                      className="w-full h-full object-cover" alt="thumb" />}</div>
                       <div>
                         <div className="text-sm font-medium">{a.title}</div>
                         <div className="text-xs opacity-70">{a.source.name}</div>
@@ -219,7 +230,6 @@ export default function NewsStudioPage() {
             </aside>
           </section>
 
-          {/* Article modal */}
           {selected && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
               <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="bg-[#021623] max-w-4xl w-full rounded-2xl p-6 overflow-auto max-h-[90vh]">

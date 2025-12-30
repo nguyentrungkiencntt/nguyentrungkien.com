@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import HeaderBlog from "@/partials/HeaderBlog";
@@ -46,7 +47,7 @@ function loadPosts(): Post[] { try { const raw = localStorage.getItem(STORAGE_KE
 
 /* Feed */
 export default function InstaBlogPage() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    
     const [posts, setPosts] = useState<Post[]>(() => loadPosts());
     const [openPostId, setOpenPostId] = useState<ID | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);

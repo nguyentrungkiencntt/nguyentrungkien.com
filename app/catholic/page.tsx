@@ -1,52 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { LoadingHeaderHome } from "@/utils/loading";
 import UnderConstructionPage from "@/components/Key";
+import Image from "next/image";
+import { DailyVerse, EventItem, ParishInfo, PrayerPost, Sermon } from "@/utils/define";
+import HeaderCatholic from "@/partials/HeaderCatholic";
 
 
-type ParishInfo = {
-  name: string;
-  address?: string;
-  priest?: string;
-  phone?: string;
-  email?: string;
-  website?: string;
-  description?: string;
-};
-
-type EventItem = {
-  id: string;
-  title: string;
-  date: string; // ISO yyyy-mm-dd
-  time?: string; // hh:mm
-  location?: string;
-  description?: string;
-};
-
-type PrayerPost = {
-  id: string;
-  author: string;
-  content: string;
-  createdAt: string; // ISO
-  answered?: boolean;
-};
-
-type Sermon = {
-  id: string;
-  title: string;
-  videoUrl?: string; // youtube or mp4
-  description?: string;
-  date?: string; // ISO
-};
-
-type DailyVerse = {
-  text: string;
-  reference: string;
-};
-
-/* ========================= MOCK / DEFAULTS ========================= */
 
 const DEFAULT_PARISH: ParishInfo = {
   name: "Giáo xứ Thánh Tâm",
@@ -68,7 +31,6 @@ const SAMPLE_SERMONS: Sermon[] = [
   { id: "s1", title: "Bài giảng: Tình yêu và hy vọng", videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", description: "Bài giảng mẫu", date: addDaysISO(-7) },
 ];
 
-/* ========================= HELPERS ========================= */
 
 function uid(prefix = "id") {
   return `${prefix}_${Math.random().toString(36).slice(2, 9)}`;
@@ -84,14 +46,11 @@ function addDaysISO(days: number) {
   return d.toISOString().slice(0, 10);
 }
 
-/* ========================= STORAGE KEYS ========================= */
 
 const STORAGE = {
   PRAYERS: "catholic:prayers",
   EVENTS: "catholic:events",
 };
-
-/* ========================= MAIN PAGE ========================= */
 
 export default function CatholicPage() {
   const [parish] = useState<ParishInfo>(DEFAULT_PARISH);
@@ -105,11 +64,9 @@ export default function CatholicPage() {
   useEffect(() => { saveToStorage(STORAGE.PRAYERS, prayers); }, [prayers]);
 
   useEffect(() => {
-    // fetch daily verse from OurManna API
     async function fetchVerse() {
       setLoadingVerse(true);
       try {
-        // OurManna API: https://www.ourmanna.com/api/v1/get/?format=json&order=daily
         const res = await fetch("https://www.ourmanna.com/api/v1/get/?format=json&order=daily");
         if (!res.ok) throw new Error("Verse API error");
         const data = await res.json();
@@ -140,7 +97,6 @@ export default function CatholicPage() {
     setPrayers(prev => prev.map(p => p.id === prayerId ? { ...p, answered: true } : p));
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState<boolean>(false);
 
   return (
@@ -151,13 +107,10 @@ export default function CatholicPage() {
             <LoadingHeaderHome />
           </div>
           <div className="max-w-6xl mx-auto mt-30">
-
-            <Header parish={parish} />
-
+            <HeaderCatholic parish={parish} />
             <section className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
               <div className="lg:col-span-2 space-y-6">
                 <Hero />
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="p-6 rounded-2xl bg-white/5">
                     <h3 className="text-xl font-semibold">Lời Chúa hôm nay</h3>
@@ -239,24 +192,6 @@ export default function CatholicPage() {
   );
 }
 
-/* ========================= SUB-COMPONENTS ========================= */
-
-function Header({ parish }: { parish: ParishInfo }) {
-  return (
-    <header className="flex items-center justify-between">
-      <div>
-        <div className="text-sm text-slate-300">{parish.name}</div>
-        <div className="text-2xl font-bold">Chia sẻ đức tin & giới thiệu giáo xứ</div>
-      </div>
-      <nav className="flex items-center gap-3">
-        <a href="#" className="text-sm opacity-80">Trang chủ</a>
-        <a href="#" className="text-sm opacity-80">Tin tức</a>
-        <a href="#" className="text-sm opacity-80">Liên hệ</a>
-      </nav>
-    </header>
-  );
-}
-
 function Hero() {
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="p-8 rounded-3xl bg-linear-to-br from-[#04132a] to-[#072a44]">
@@ -271,7 +206,10 @@ function Hero() {
         </div>
         <div className="flex justify-center">
           <div className="w-56 h-56 rounded-full bg-linear-to-tr from-yellow-400/10 to-white/10 flex items-center justify-center border border-white/6">
-            <img src="/images/cross.png" alt="cross" className="w-28 h-28" />
+            <Image src="/images/cross.png" alt="cross"
+            height={500}
+            width={500}
+            className="w-28 h-28" />
           </div>
         </div>
       </div>
@@ -292,7 +230,6 @@ function ParishCard({ parish }: { parish: ParishInfo }) {
   );
 }
 
-/* Prayer wall */
 function PrayerWall({ prayers, onAdd, onMarkAnswered }: { prayers: PrayerPost[]; onAdd: (author: string, content: string) => void; onMarkAnswered: (id: string) => void; }) {
   const [name, setName] = useState<string>("");
   const [content, setContent] = useState<string>("");
@@ -328,7 +265,6 @@ function PrayerWall({ prayers, onAdd, onMarkAnswered }: { prayers: PrayerPost[];
   );
 }
 
-/* Events manager */
 function EventManager({ events, onAdd, parish }: { events: EventItem[]; onAdd: (ev: Omit<EventItem, 'id'>) => void; parish: ParishInfo }) {
   const [title, setTitle] = useState<string>("");
   const [date, setDate] = useState<string>(new Date().toISOString().slice(0, 10));
@@ -377,7 +313,6 @@ function EventManager({ events, onAdd, parish }: { events: EventItem[]; onAdd: (
   );
 }
 
-/* ========================= STORAGE HELPERS ========================= */
 
 function loadFromStorage<T>(key: string, fallback: T): T {
   try {

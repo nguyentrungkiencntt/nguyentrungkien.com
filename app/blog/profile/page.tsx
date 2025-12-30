@@ -58,6 +58,7 @@ function loadPosts(): Post[] { try { const raw = localStorage.getItem(STORAGE_KE
 
 
 export default function InstaBlogPage() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [posts, setPosts] = useState<Post[]>(() => loadPosts());
     const [openPostId, setOpenPostId] = useState<ID | null>(null);
 
